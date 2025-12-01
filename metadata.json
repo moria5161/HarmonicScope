@@ -1,0 +1,5 @@
+{
+  "name": "HarmonicScope: Spherical Harmonics Visualizer",
+  "description": "An interactive 3D visualization tool for learning about Real Spherical Harmonics, angular frequency, and atomic orbitals.",
+  "requestFramePermissions": []
+}
