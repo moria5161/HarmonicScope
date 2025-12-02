@@ -1,3 +1,4 @@
+
 import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars, Environment } from '@react-three/drei';
@@ -107,26 +108,36 @@ const SuperpositionMode: React.FC = () => {
                         </button>
                     </div>
 
-                    <div className="space-y-3">
-                        {/* L and M Selectors */}
-                        <div className="grid grid-cols-2 gap-3">
-                            <div>
-                                <label className="block text-[10px] text-slate-400 font-mono mb-1">Degree (l)</label>
-                                <input 
-                                    type="number" min="0" max="5" 
-                                    value={term.l}
-                                    onChange={(e) => updateTerm(term.id, { l: parseInt(e.target.value) || 0 })}
-                                    className="w-full bg-sci-900 border border-sci-700 rounded px-2 py-1 text-xs text-white font-mono focus:border-sci-accent outline-none"
-                                />
+                    <div className="space-y-4">
+                        {/* L Slider */}
+                        <div>
+                            <div className="flex justify-between mb-1">
+                                <label className="text-[10px] text-slate-400 font-mono">Degree (l)</label>
+                                <span className="text-[10px] text-white font-mono">{term.l}</span>
                             </div>
-                            <div>
-                                <label className="block text-[10px] text-slate-400 font-mono mb-1">Order (m)</label>
-                                <input 
-                                    type="number" min={-term.l} max={term.l}
-                                    value={term.m}
-                                    onChange={(e) => updateTerm(term.id, { m: parseInt(e.target.value) || 0 })}
-                                    className="w-full bg-sci-900 border border-sci-700 rounded px-2 py-1 text-xs text-white font-mono focus:border-sci-accent outline-none"
-                                />
+                            <input 
+                                type="range" min="0" max="5" step="1"
+                                value={term.l}
+                                onChange={(e) => updateTerm(term.id, { l: parseInt(e.target.value) })}
+                                className="w-full h-1.5 bg-sci-900 rounded-lg appearance-none cursor-pointer accent-sci-accent"
+                            />
+                        </div>
+
+                        {/* M Slider */}
+                        <div>
+                            <div className="flex justify-between mb-1">
+                                <label className="text-[10px] text-slate-400 font-mono">Order (m)</label>
+                                <span className="text-[10px] text-white font-mono">{term.m}</span>
+                            </div>
+                            <input 
+                                type="range" min={-term.l} max={term.l} step="1"
+                                value={term.m}
+                                onChange={(e) => updateTerm(term.id, { m: parseInt(e.target.value) })}
+                                disabled={term.l === 0}
+                                className={`w-full h-1.5 bg-sci-900 rounded-lg appearance-none cursor-pointer accent-sci-accent ${term.l === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            />
+                            <div className="flex justify-between mt-0.5 text-[8px] text-slate-600 font-mono">
+                                <span>-{term.l}</span><span>+{term.l}</span>
                             </div>
                         </div>
 
