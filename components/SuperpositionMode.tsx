@@ -1,4 +1,3 @@
-
 import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars, Environment } from '@react-three/drei';
@@ -56,7 +55,10 @@ const SuperpositionMode: React.FC = () => {
   return (
     <div className="relative w-full h-full">
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [6, 4, 6], fov: 45 }}>
+        <Canvas 
+          camera={{ position: [6, 4, 6], fov: 45 }}
+          gl={{ preserveDrawingBuffer: true }}
+        >
           <color attach="background" args={['#050505']} />
           <fog attach="fog" args={['#050505', 10, 30]} />
           
@@ -75,8 +77,8 @@ const SuperpositionMode: React.FC = () => {
         </Canvas>
       </div>
 
-      {/* Info Overlay */}
-      <div className="absolute left-6 top-24 max-w-sm pointer-events-none z-10">
+      {/* Info Overlay - Narrowed by ~25% (w-72 instead of max-w-sm) */}
+      <div className="absolute left-6 top-24 w-72 pointer-events-none z-10">
         <div className="bg-sci-800/80 backdrop-blur-md border border-sci-700 p-6 rounded-xl shadow-2xl text-slate-200">
             <h2 className="text-xl font-bold font-mono text-white mb-1">Linear Combination</h2>
             <div className="text-sm font-mono text-sci-accent mb-3">f(θ,φ) = Σ c<sub className="text-[10px]">i</sub> Y<sub className="text-[10px]">l,m</sub></div>
@@ -90,8 +92,8 @@ const SuperpositionMode: React.FC = () => {
         </div>
       </div>
 
-      {/* Controls */}
-      <div className="absolute right-6 top-24 w-80 pointer-events-auto z-20 max-h-[calc(100vh-150px)] overflow-y-auto pr-1">
+      {/* Controls - Narrowed by 25% (w-60 instead of w-80) */}
+      <div className="absolute right-6 top-24 w-60 pointer-events-auto z-20 max-h-[calc(100vh-150px)] overflow-y-auto pr-1">
          <div className="space-y-4">
             
             {/* Term List */}

@@ -35,7 +35,7 @@ const InfoPanel: React.FC<Props> = ({ config }) => {
   const polarNodes = config.l - Math.abs(config.m);
 
   return (
-    <div className="absolute left-6 top-6 max-w-sm pointer-events-none select-none z-10">
+    <div className="absolute left-6 top-24 w-72 pointer-events-none select-none z-10">
       <div className="bg-sci-800/80 backdrop-blur-md border border-sci-700 p-6 rounded-xl shadow-2xl text-slate-200">
         <h1 className="text-3xl font-bold font-mono text-white mb-2 tracking-tight">
           Y<sub className="text-lg">({config.l},{config.m})</sub>
@@ -53,7 +53,7 @@ const InfoPanel: React.FC<Props> = ({ config }) => {
              </div>
              <div>
                 <p className="font-semibold text-xs text-slate-400 uppercase">Cartesian Form</p>
-                <p className="font-mono text-lg text-white mt-1 italic font-serif">
+                <p className="font-mono text-lg text-white mt-1 italic font-serif leading-tight">
                   {polynomial}
                 </p>
              </div>

@@ -21,7 +21,10 @@ const SingleMode: React.FC = () => {
   return (
     <div className="relative w-full h-full">
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [6, 4, 6], fov: 45 }}>
+        <Canvas 
+          camera={{ position: [6, 4, 6], fov: 45 }}
+          gl={{ preserveDrawingBuffer: true }}
+        >
           <color attach="background" args={['#050505']} />
           <fog attach="fog" args={['#050505', 10, 30]} />
           

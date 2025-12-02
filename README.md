@@ -1,20 +1,39 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# HarmonicScope: Spherical Harmonics Visualizer
 
-# Run and deploy your AI Studio app
+An interactive educational tool for visualizing Real Spherical Harmonics ($Y_{l,m}$) and their linear combinations. This project is built with React, Three.js (React Three Fiber), and Tailwind CSS.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1v3aTCVsoSrAWUqUvhA59mZvAeUJZCGMC
+- **Single Harmonic Mode**: Visualize individual harmonics up to $l=7$.
+- **Linear Combination Mode**: Create weighted sums of multiple harmonics to visualize orbital hybridization and superposition.
+- **Physics Accurate**: Uses standard physics conventions (Z-up) and provides Cartesian polynomial equivalents.
+- **Interactive Controls**: Real-time adjustment of quantum numbers ($l, m$), phase visualization, and wireframe modes.
+- **Export**: Save high-quality PNG snapshots of your visualizations.
 
-## Run Locally
+## Deployment
 
-**Prerequisites:**  Node.js
+This is a **pure frontend application**. It performs all mathematical calculations (Legendre polynomials) client-side in the browser.
 
+**No API Keys Required**: This project does not use Google Gemini API or any other backend service.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Deploy to Vercel
+
+1. Push this code to a GitHub repository.
+2. Import the repository in Vercel.
+3. Vercel will automatically detect the Vite preset.
+4. Click **Deploy**. (Leave Environment Variables empty).
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Tech Stack
+
+- **React 18**
+- **Vite**
+- **Three.js / React Three Fiber** (3D Rendering)
+- **Tailwind CSS** (Styling)
+- **Lucide React** (Icons)

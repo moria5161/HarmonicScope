@@ -22,7 +22,7 @@ const Controls: React.FC<Props> = ({ config, onChange }) => {
   };
 
   return (
-    <div className="absolute right-6 top-6 w-80 pointer-events-auto z-20">
+    <div className="absolute right-6 top-24 w-60 pointer-events-auto z-20">
       <div className="bg-sci-800/90 backdrop-blur-md border border-sci-700 rounded-xl shadow-2xl p-6 text-slate-200">
         <div className="flex items-center gap-2 mb-6 text-sci-accent">
             <Settings2 size={18} />

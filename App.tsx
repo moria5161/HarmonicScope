@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
 import SingleMode from './components/SingleMode';
 import SuperpositionMode from './components/SuperpositionMode';
-import { Atom, FunctionSquare } from 'lucide-react';
+import { Atom, FunctionSquare, Camera } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'single' | 'multi'>('single');
+
+  const handleScreenshot = () => {
+    // Find the canvas element
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+        // Create a temporary link
+        const link = document.createElement('a');
+        link.download = `harmonic-${activeTab}-${new Date().toISOString().slice(0,19)}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+  };
 
   return (
     <div className="relative w-full h-screen bg-sci-900 overflow-hidden text-white selection:bg-sci-accent selection:text-white flex flex-col">
@@ -44,13 +56,25 @@ const App: React.FC = () => {
 
       {/* Shared Footer / Legend */}
       <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end pointer-events-none z-40">
-         <div className="flex gap-4 text-xs font-mono bg-black/40 backdrop-blur px-4 py-2 rounded-full border border-white/10">
-            <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-sci-pos"></span> Positive Phase (+)
-            </div>
-            <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-sci-neg"></span> Negative Phase (-)
-            </div>
+         <div className="flex items-center gap-4">
+             <div className="flex gap-4 text-xs font-mono bg-black/40 backdrop-blur px-4 py-2 rounded-full border border-white/10">
+                <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-sci-pos"></span> Positive Phase (+)
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-sci-neg"></span> Negative Phase (-)
+                </div>
+             </div>
+             
+             {/* Screenshot Button */}
+             <button
+                onClick={handleScreenshot}
+                className="pointer-events-auto flex items-center gap-2 px-4 py-2 bg-sci-accent/10 hover:bg-sci-accent text-sci-accent hover:text-white border border-sci-accent/50 rounded-full text-xs font-bold shadow-lg transition-all backdrop-blur-sm"
+                title="Save Image"
+             >
+                <Camera size={16} />
+                <span className="hidden sm:inline">Save Image</span>
+             </button>
          </div>
          
          <div className="text-[10px] text-slate-500 font-mono text-right max-w-xs bg-black/40 p-2 rounded backdrop-blur">
