@@ -1,64 +1,49 @@
-import React, { useState, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Stars, Environment } from '@react-three/drei';
-import HarmonicMesh from './components/HarmonicMesh';
-import Controls from './components/Controls';
-import InfoPanel from './components/InfoPanel';
-import ScientificAxes from './components/ScientificAxes';
-import { HarmonicConfig } from './types';
+import React, { useState } from 'react';
+import SingleMode from './components/SingleMode';
+import SuperpositionMode from './components/SuperpositionMode';
+import { Atom, FunctionSquare } from 'lucide-react';
 
 const App: React.FC = () => {
-  const [config, setConfig] = useState<HarmonicConfig>({
-    l: 2,
-    m: 0,
-    amplitude: 4,
-    showWireframe: true,
-    showAxis: true,
-    resolution: 128, 
-    mode: 'amplitude'
-  });
+  const [activeTab, setActiveTab] = useState<'single' | 'multi'>('single');
 
   return (
-    <div className="relative w-full h-screen bg-sci-900 overflow-hidden text-white selection:bg-sci-accent selection:text-white">
+    <div className="relative w-full h-screen bg-sci-900 overflow-hidden text-white selection:bg-sci-accent selection:text-white flex flex-col">
       
-      {/* 3D Scene */}
-      <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [6, 4, 6], fov: 45 }}>
-          <color attach="background" args={['#050505']} />
-          <fog attach="fog" args={['#050505', 10, 30]} />
-          
-          <Suspense fallback={null}>
-            {/* Lighting */}
-            <ambientLight intensity={0.2} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#4f46e5" />
-            
-            <Environment preset="city" />
-            <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-
-            {/* Main Object */}
-            <HarmonicMesh config={config} />
-            
-            {/* Custom Scientific Axes */}
-            <ScientificAxes visible={config.showAxis} />
-            
-            <OrbitControls 
-                enablePan={false} 
-                minDistance={3} 
-                maxDistance={15}
-                autoRotate={false}
-                autoRotateSpeed={1}
-            />
-          </Suspense>
-        </Canvas>
+      {/* Header / Navigation */}
+      <div className="absolute top-0 left-0 right-0 z-50 p-4 pointer-events-none">
+        <div className="max-w-md mx-auto bg-sci-800/90 backdrop-blur-md border border-sci-700 rounded-full p-1.5 flex shadow-2xl pointer-events-auto">
+            <button
+                onClick={() => setActiveTab('single')}
+                className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-full text-xs font-bold transition-all ${
+                    activeTab === 'single' 
+                    ? 'bg-sci-700 text-white shadow-md' 
+                    : 'text-slate-400 hover:text-white'
+                }`}
+            >
+                <Atom size={16} />
+                Single Harmonic
+            </button>
+            <button
+                onClick={() => setActiveTab('multi')}
+                className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-full text-xs font-bold transition-all ${
+                    activeTab === 'multi' 
+                    ? 'bg-sci-700 text-white shadow-md' 
+                    : 'text-slate-400 hover:text-white'
+                }`}
+            >
+                <FunctionSquare size={16} />
+                Linear Combination
+            </button>
+        </div>
       </div>
 
-      {/* UI Overlay */}
-      <InfoPanel config={config} />
-      <Controls config={config} onChange={setConfig} />
+      {/* Main Content Area */}
+      <div className="flex-1 relative">
+        {activeTab === 'single' ? <SingleMode /> : <SuperpositionMode />}
+      </div>
 
-      {/* Legend / Footer */}
-      <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end pointer-events-none">
+      {/* Shared Footer / Legend */}
+      <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end pointer-events-none z-40">
          <div className="flex gap-4 text-xs font-mono bg-black/40 backdrop-blur px-4 py-2 rounded-full border border-white/10">
             <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-sci-pos"></span> Positive Phase (+)

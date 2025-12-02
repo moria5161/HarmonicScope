@@ -14,7 +14,8 @@ const Axis: React.FC<{
       position={labelPos}
       fontSize={0.4}
       color={color}
-      font="https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0Pn54W4E.woff"
+      // Removed direct Google Fonts URL to prevent CORS errors. 
+      // Drei falls back to a safe default font.
     >
       {label}
     </Text>

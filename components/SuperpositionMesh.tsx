@@ -1,22 +1,19 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { useFrame } from '@react-three/fiber';
 import { realSphericalHarmonic, getPhaseColor } from '../utils/sphericalHarmonics';
-import { HarmonicConfig } from '../types';
+import { SuperpositionConfig } from '../types';
 
 interface Props {
-  config: HarmonicConfig;
+  config: SuperpositionConfig;
 }
 
-const HarmonicMesh: React.FC<Props> = ({ config }) => {
+const SuperpositionMesh: React.FC<Props> = ({ config }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const wireframeRef = useRef<THREE.LineSegments>(null);
 
-  // Memoize geometry calculation to avoid expensive re-computation on every frame
   const geometry = useMemo(() => {
-    const { l, m, resolution, amplitude, mode } = config;
+    const { terms, resolution, amplitude } = config;
     
-    // We construct a grid
     const widthSegments = resolution;
     const heightSegments = resolution; 
 
@@ -33,40 +30,31 @@ const HarmonicMesh: React.FC<Props> = ({ config }) => {
         const u = x / widthSegments;
         const phi = u * 2 * Math.PI; // Azimuthal angle [0, 2PI]
 
-        // Calculate Y_{l,m}
-        const Y = realSphericalHarmonic(l, m, theta, phi);
-        
-        // Determine radius for visualization
-        const absY = Math.abs(Y);
-        let radius = 0;
-        
-        if (mode === 'density') {
-           // Probability density |Y|^2
-           radius = absY * absY * amplitude;
-        } else {
-           // Amplitude |Y| (Standard)
-           radius = absY * amplitude;
+        // Summation Logic: f = sum( c_i * Y_{l_i, m_i} )
+        let totalValue = 0;
+        for (const term of terms) {
+            totalValue += term.weight * realSphericalHarmonic(term.l, term.m, theta, phi);
         }
-
-        // Convert spherical to cartesian
-        // x = r sin(theta) cos(phi)
-        // y = r sin(theta) sin(phi)
-        // z = r cos(theta)
-        // Mapping: Math Z -> Three Y (Up), Math X -> Three X, Math Y -> Three Z (Depth)
         
+        // We stick to Amplitude mode for superposition to clearly see constructive/destructive interference
+        const absVal = Math.abs(totalValue);
+        const radius = absVal * amplitude;
+
+        // Convert to Cartesian
         const sinTheta = Math.sin(theta);
         const cosTheta = Math.cos(theta);
         const sinPhi = Math.sin(phi);
         const cosPhi = Math.cos(phi);
 
-        const px = radius * sinTheta * cosPhi;
-        const py = radius * cosTheta; 
-        const pz = radius * sinTheta * sinPhi; 
+        // Physics Z-up mapped to Three.js Y-up
+        const px = radius * sinTheta * cosPhi; // Physics X -> Three X
+        const py = radius * cosTheta;          // Physics Z -> Three Y (Up)
+        const pz = radius * sinTheta * sinPhi; // Physics Y -> Three Z (Depth)
 
         positions.push(px, py, pz);
 
-        // Color based on phase (sign of Y)
-        const [r, g, b] = getPhaseColor(Y);
+        // Color based on phase of the TOTAL sum
+        const [r, g, b] = getPhaseColor(totalValue);
         colors.push(r, g, b);
       }
     }
@@ -91,16 +79,12 @@ const HarmonicMesh: React.FC<Props> = ({ config }) => {
     geom.computeVertexNormals();
 
     return geom;
-  }, [config.l, config.m, config.resolution, config.amplitude, config.mode]);
+  }, [config.terms, config.resolution, config.amplitude]);
 
   // Clean up geometry when it updates to prevent memory leaks
   useEffect(() => {
     return () => geometry.dispose();
   }, [geometry]);
-
-  useFrame((state) => {
-    // Optional gentle rotation logic can go here if desired
-  });
 
   return (
     <group>
@@ -125,4 +109,4 @@ const HarmonicMesh: React.FC<Props> = ({ config }) => {
   );
 };
 
-export default HarmonicMesh;
+export default SuperpositionMesh;

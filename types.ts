@@ -10,6 +10,21 @@ export interface HarmonicConfig {
   mode: VisualizationMode; // New: Toggle between |Y| and |Y|^2
 }
 
+export interface HarmonicTerm {
+  id: string;
+  l: number;
+  m: number;
+  weight: number;
+}
+
+export interface SuperpositionConfig {
+  terms: HarmonicTerm[];
+  amplitude: number;
+  showWireframe: boolean;
+  showAxis: boolean;
+  resolution: number;
+}
+
 export interface VertexData {
   positions: Float32Array;
   colors: Float32Array;
