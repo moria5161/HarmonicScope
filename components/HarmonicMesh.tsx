@@ -1,6 +1,5 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { useFrame } from '@react-three/fiber';
 import { realSphericalHarmonic, getPhaseColor } from '../utils/sphericalHarmonics';
 import { HarmonicConfig } from '../types';
 
@@ -97,10 +96,6 @@ const HarmonicMesh: React.FC<Props> = ({ config }) => {
   useEffect(() => {
     return () => geometry.dispose();
   }, [geometry]);
-
-  useFrame((state) => {
-    // Optional gentle rotation logic can go here if desired
-  });
 
   return (
     <group>

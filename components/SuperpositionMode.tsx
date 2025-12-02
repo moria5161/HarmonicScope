@@ -90,12 +90,12 @@ const SuperpositionMode: React.FC = () => {
       </div>
 
       {/* Controls */}
-      <div className="absolute right-6 top-24 w-80 pointer-events-auto z-20 max-h-[calc(100vh-150px)] overflow-y-auto pr-1 custom-scrollbar">
+      <div className="absolute right-6 top-24 w-80 pointer-events-auto z-20 max-h-[calc(100vh-150px)] overflow-y-auto pr-1">
          <div className="space-y-4">
             
             {/* Term List */}
             {config.terms.map((term, index) => (
-                <div key={term.id} className="bg-sci-800/90 backdrop-blur-md border border-sci-700 rounded-xl p-4 shadow-lg animate-in slide-in-from-right-4 fade-in duration-300">
+                <div key={term.id} className="bg-sci-800/90 backdrop-blur-md border border-sci-700 rounded-xl p-4 shadow-lg animate-in">
                     <div className="flex justify-between items-center mb-3 border-b border-white/5 pb-2">
                         <span className="font-mono text-xs font-bold text-sci-accent">Term {index + 1}</span>
                         <button 
